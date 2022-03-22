@@ -18,10 +18,17 @@ class EPUBViewController: ReaderViewController {
   
     var popoverUserconfigurationAnchor: UIBarButtonItem?
     var userSettingNavigationController: UserSettingsNavigationController
-
+    
+    @objc func highlightAction(_sender: UIMenuController?){
+        
+        print("highlight tapped 😃")
+    }
     init(publication: Publication, locator: Locator?, bookId: Book.Id, books: BookRepository, bookmarks: BookmarkRepository, resourcesServer: ResourcesServer) {
-        let navigator = EPUBNavigatorViewController(publication: publication, initialLocation: locator, resourcesServer: resourcesServer)
-
+        var configuration = EPUBNavigatorViewController.Configuration()
+        configuration.editingActions.append(EditingAction(title: "Highlight", action: #selector(highlightAction)))
+        
+        let navigator = EPUBNavigatorViewController(publication: publication, initialLocation: locator, resourcesServer: resourcesServer,config: configuration)
+        
         let settingsStoryboard = UIStoryboard(name: "UserSettings", bundle: nil)
         userSettingNavigationController = settingsStoryboard.instantiateViewController(withIdentifier: "UserSettingsNavigationController") as! UserSettingsNavigationController
         userSettingNavigationController.fontSelectionViewController =
